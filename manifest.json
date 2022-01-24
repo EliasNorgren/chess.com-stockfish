@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+  "name": "Chess",
+  "version": "1.0",
+
+  "description": "Fucks bitches",
+
+  "icons": {
+    "48": "icon.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.chess.com/*"],
+      "js": ["chess2.js"]
+    }
+  ],
+  "permissions": ["<all_urls>"],
+  "host_permissions": ["*://localhost/*"],
+
+  "web_accessible_resources": ["images/my-image.png"]
+}
