@@ -2276,11 +2276,12 @@ function getPosition(inp) {
 console.log("Calculating");
 
 console.log("Hello from Firefox code");
+var whitePlatingBool = true;
 
 function calculate() {
   //   document.getElementById("chess-button").innerHTML = "Calculating";
   var json = {
-    turn: "white",
+    turn: whitePlatingBool ? "white" : "black",
     isFinished: false,
     castling: {
       whiteLong: true,
@@ -2341,9 +2342,26 @@ function calculate() {
   console.log("DONE");
 }
 
+let label = document.createElement("label");
+label.for = "white-playing";
+label.innerHTML = "White playing";
+label.style = "color: white; background-color: #1E4A20; font-size: large;";
+let whitePlaying = document.createElement("input");
+whitePlaying.type = "checkbox";
+whitePlaying.id = "white-playing";
+
+whitePlaying.style =
+  "color: white; background-color: #1E4A20; font-size: xxx-large; width:34px;";
+whitePlaying.innerHTML = "White playing";
+document.body.append(whitePlaying);
+document.body.append(label);
+document.getElementById("white-playing").addEventListener("click", () => {
+  whitePlatingBool = document.getElementById("white-playing").checked;
+});
+
 let btn = document.createElement("button");
 btn.innerHTML = "Click Me To Calculate";
-btn.style = "color: white; background-color: #1E4A20; font-size: xxx-large;";
+btn.style = "color: white; background-color: #1E4A20; font-size: xxx-large; ";
 btn.id = "chess-button";
 document.body.appendChild(btn);
 
