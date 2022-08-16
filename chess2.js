@@ -2353,8 +2353,12 @@ whitePlaying.id = "white-playing";
 whitePlaying.style =
   "color: white; background-color: #1E4A20; font-size: xxx-large; width:34px;";
 whitePlaying.innerHTML = "White playing";
-document.body.append(whitePlaying);
-document.body.append(label);
+//document.body.append(whitePlaying);
+//document.body.append(label);
+document.getElementById("board-layout-main").appendChild(whitePlaying);
+document.getElementById("board-layout-main").appendChild(label);
+
+
 document.getElementById("white-playing").addEventListener("click", () => {
   whitePlatingBool = document.getElementById("white-playing").checked;
 });
@@ -2363,7 +2367,8 @@ let btn = document.createElement("button");
 btn.innerHTML = "Click Me To Calculate";
 btn.style = "color: white; background-color: #1E4A20; font-size: xxx-large; ";
 btn.id = "chess-button";
-document.body.appendChild(btn);
+//document.body.appendChild(btn);
+document.getElementById("board-layout-main").appendChild(btn);
 
 document.getElementById("chess-button").addEventListener("click", () => {
   calculate();
