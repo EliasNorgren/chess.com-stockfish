@@ -1,3 +1,5 @@
+// import $ from jquerry;
+
 class Game {
   constructor(configuration) {
     this.board = new Board(configuration);
@@ -2273,8 +2275,39 @@ function getPosition(inp) {
       return "H".concat(number);
   }
 }
-console.log("Calculating");
 
+function highlightSquare(square) {
+  var substring = square.substring(0, 2);
+  var numpart;
+  switch (substring.charAt(0)) {
+    case "a":
+      return "1";
+    case "b":
+      numpart = "2";
+    case "c":
+      numpart = "3";
+    case "d":
+      numpart = "4";
+    case "e":
+      numpart = "5";
+    case "f":
+      numpart = "6";
+    case "g":
+      numpart = "7";
+    case "h":
+      numpart = "8";
+  }
+  var square = numpart.concat(substring.charAt(1));
+  highLightedDiv = document.createElement("div");
+  highLightedDiv.className = "highlight square-".concat(square);
+  highLightedDiv.style = "background-color: rgb(235, 97, 80); opacity: 0.8;";
+  // highLightedDiv.data-test-element = "highlight";
+
+  $(".coordinates").appendChild(highLightedDiv);
+}
+
+console.log("Calculating");
+let highLightedDiv;
 console.log("Hello from Firefox code");
 var whitePlatingBool = true;
 
@@ -2311,18 +2344,6 @@ function calculate() {
   console.log(json);
   res = getFen(json);
   console.log(res);
-  //   printToConsole(json);
-  //   userAction("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1").then(
-  //     ((data) => data.body).then((body) => {
-  //       const reader = body.getReader();
-  //       value = reader.read();
-  //       console.log(value);
-  //     })
-  //   );
-
-  //     8/6p1/1p1k2P1/2p5/8/P7/8/8 w KQkq - 0 1
-  //     rnbqkbnr/pppppppp/8/8/8/8/PPPPPP1P/R1BQKBNR w KQkq - 0 1
-  //   res = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
   (async () => {
     const rawResponse = await fetch("https://chess.apurn.com/nextmove", {
@@ -2335,7 +2356,7 @@ function calculate() {
     const content = await rawResponse.text();
 
     console.log(content);
-
+    // highlightSquare(content);
     document.getElementById("chess-button").innerHTML = content;
   })();
 
