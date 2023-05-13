@@ -2306,7 +2306,6 @@ function highlightSquare(square) {
   $(".coordinates").appendChild(highLightedDiv);
 }
 
-console.log("Calculating");
 let highLightedDiv;
 console.log("Hello from Firefox code");
 var whitePlatingBool = true;
@@ -2345,21 +2344,15 @@ function calculate() {
   res = getFen(json);
   console.log(res);
 
-  (async () => {
-    const rawResponse = await fetch("https://chess.apurn.com/nextmove", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: res,
-    });
-    const content = await rawResponse.text();
 
-    console.log(content);
-    // highlightSquare(content);
-    document.getElementById("chess-button").innerHTML = content;
-  })();
-
+  console.log("Before")
+  var engine = new Worker('D:/FirefoxExtension/chess/stockfish.js')
+  engine.onmessage = function(event) {
+    console.log('Stockfish says: ' + event.data);
+  };
+  engine.postMessage('uci');
+  engine.postMessage('position fen rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+  engine.postMessage('go depth 1');
   console.log("DONE");
 }
 
@@ -2394,3 +2387,4 @@ document.getElementById("board-layout-main").appendChild(btn);
 document.getElementById("chess-button").addEventListener("click", () => {
   calculate();
 });
+
