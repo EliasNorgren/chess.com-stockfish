@@ -11,6 +11,7 @@ from array import *
 import os
 import subprocess
 import platform
+import re
 
 driver = webdriver.Firefox()
 driver.get('https://www.chess.com/play/computer')
@@ -50,8 +51,8 @@ def button_click():
 
     matrix = getAllPiecesFromAllDivs(divNames)
     fen = matrixToFEN(matrix)
-    for row in matrix :
-        print(row)
+    #for row in matrix :
+    #    print(row)
     print(fen)
 
     bestMove = getBestMove(fen, "20")
@@ -77,7 +78,12 @@ def getAllPiecesFromAllDivs(allDivs: list[str]) -> list[str]:
 
     for div in allDivs :
         # print("-"+div+"-")
+        regex = re.compile(r"piece .. square-\d\d")
+        if (regex.search(div) == None):
+            continue
+        
         if div[:5] == "piece":
+            print(div)
             splitted = div.split(' ')
             coord = splitted[2].split('-')[1]
             col = coord[0]
@@ -118,7 +124,7 @@ def matrixToFEN(board):
         fen += "/"
 
     # Add information about the state of the game
-    if WhiteTurn :
+    if WhiteTurn.get() :
         turn = 'w'
     else :
         turn = 'b'
@@ -187,10 +193,10 @@ def main():
     global whiteQueenCastling
     global blackKingCastling
     global blackQueenCastling
-    whiteKingCastling = BooleanVar()
-    whiteQueenCastling = BooleanVar()
-    blackKingCastling = BooleanVar()
-    blackQueenCastling = BooleanVar()
+    whiteKingCastling = BooleanVar(value=True)
+    whiteQueenCastling = BooleanVar(value=True)
+    blackKingCastling = BooleanVar(value=True)
+    blackQueenCastling = BooleanVar(value=True)
     blackKingCastlingCheckButton = Checkbutton(frame, text="BlackKingCastling", variable=blackKingCastling)
     blackKingCastlingCheckButton.grid(row=2, column=0, padx=15, pady=15)
     blackQueenCastlingCheckButton = Checkbutton(frame, text="BlackQueenCastling", variable=blackQueenCastling)
