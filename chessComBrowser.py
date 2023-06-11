@@ -26,11 +26,6 @@ elif os_name == "Linux":
     file_path = os.path.abspath('stockfishLinux')
 
 
-process = subprocess.Popen([file_path], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-startedMsg = process.stdout.readline().decode('utf-8')
-print(startedMsg.encode("utf-8"))
-
-
 moveLabel : Label
 WhiteTurn : BooleanVar
 
@@ -56,6 +51,9 @@ def button_click():
     print(fen)
 
     bestMove = getBestMove(fen, "20")
+    if isinstance(bestMove, int):
+        print("ERROR:", bestMove)
+        exit(1)
     moveLabel.config(text=f"{bestMove[:2]} {bestMove[2:4]}")
     print(bestMove)
     # with open("allDivs.pickle", "wb") as f:
@@ -147,6 +145,11 @@ def matrixToFEN(board):
 
 
 def getBestMove(fen: str, depth: str):
+
+    process = subprocess.Popen([file_path], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    startedMsg = process.stdout.readline().decode('utf-8')
+    print(startedMsg.encode("utf-8"))
+
     # run the executable program
     fenString = f"position fen {fen}\n"
     depthString = f"go depth {depth}\n"
