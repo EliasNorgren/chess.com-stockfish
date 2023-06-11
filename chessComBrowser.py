@@ -34,6 +34,8 @@ blackKingCastling : BooleanVar
 whiteQueenCastling : BooleanVar
 whiteKingCastling : BooleanVar
 
+depthTextBox : Entry
+
 # Define the button click action
 def button_click():
     global moveLabel
@@ -49,11 +51,18 @@ def button_click():
     #for row in matrix :
     #    print(row)
     print(fen)
-
+    depth = depthTextBox.get()
+    try:
+        int(depth)
+    except ValueError:
+        moveLabel.config(text=f"Depth input incorrect")
+        return -1
+     
     bestMove = getBestMove(fen, "20")
     if isinstance(bestMove, int):
         print("ERROR:", bestMove)
-        exit(1)
+        moveLabel.config(text=f"Engine error, make sure castling rights are correct")
+        return -1
     moveLabel.config(text=f"{bestMove[:2]} {bestMove[2:4]}")
     print(bestMove)
     # with open("allDivs.pickle", "wb") as f:
@@ -172,8 +181,11 @@ def getBestMove(fen: str, depth: str):
 
 
 
+root : Tk
+
 def main():
         # # Create the GUI window
+    global root
     root = Tk()
     root.title('Chess.com cheating browser')
     root.wm_attributes("-topmost", True)
@@ -208,6 +220,14 @@ def main():
     whiteKingCastlingCheckButton.grid(row=3, column=0, padx=15, pady=15)
     whiteQueenCastlingCheckButton = Checkbutton(frame, text="WhiteQueenCastling", variable=whiteQueenCastling)
     whiteQueenCastlingCheckButton.grid(row=3, column=1, padx=15, pady=15)
+
+    global depthTextBox
+    depthLabel = Label(frame, text="Engine depth: ")
+    depthLabel.grid(row=4, column=0, padx=15, pady=15)
+    depthTextBox = Entry(frame)
+    depthTextBox.insert(0, "20")
+    depthTextBox.grid(row=4, column=1, padx=15, pady=15)
+    
 
     frame.pack()
     # button.pack()
