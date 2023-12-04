@@ -48,8 +48,6 @@ def button_click():
 
     matrix = getAllPiecesFromAllDivs(divNames)
     fen = matrixToFEN(matrix)
-    #for row in matrix :
-    #    print(row)
     print(fen)
     depth = depthTextBox.get()
     try:
@@ -59,12 +57,15 @@ def button_click():
         return -1
      
     bestMove = getBestMove(fen, "20")
+    print(bestMove)
+    mateinN = bestMove[1]
+    bestMove = bestMove[0]
+
     if isinstance(bestMove, int):
         print("ERROR:", bestMove)
         moveLabel.config(text=f"Engine error, make sure castling rights are correct")
         return -1
-    moveLabel.config(text=f"{bestMove[:2]} {bestMove[2:4]}")
-    print(bestMove)
+    moveLabel.config(text=f"{bestMove[:2]} {bestMove[2:4]} \n {mateinN}")
     # with open("allDivs.pickle", "wb") as f:
     #     pickle.dump(divNames, f)
 
@@ -166,14 +167,19 @@ def getBestMove(fen: str, depth: str):
     process.stdin.write(depthString.encode("utf-8"))
     process.stdin.flush()
     # read the output continuously
+    mateinN = ""
+
     while True:
         output = process.stdout.readline().decode('utf-8')
+        print(output)
+        if f"info depth {depth}" in output and "mate" in output:
+            mateinN = "Mate in " + output.split(" ")[9]
+
         if output == '' and process.poll() is not None:
             break
         if output:
-            # print(output)
             if output.split(" ")[0] == "bestmove":
-                return output.split(" ")[1]
+                return (output.split(" ")[1], mateinN)
 
     # get the return code of the process
     return_code = process.poll()
